@@ -1,0 +1,56 @@
+services:
+
+  agencia_mysql:
+    image: mysql:8.0
+    container_name: agencia_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    networks:
+      - agencia_network
+
+  agencia_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: agencia_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: agencia_mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    volumes:
+      - ./volumes/phpmyadmin:/sessions/
+    depends_on:
+      - agencia_mysql
+    networks:
+      - agencia_network
+
+  agencia_php:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: agencia_php
+    volumes:
+      - ./:/var/www/html
+    environment:
+      TZ: America/Bogota
+    ports:
+      - "8000:80" 
+      - "5173:5173"
+    depends_on:
+      - agencia_mysql
+    networks:
+      - agencia_network
+
+networks:
+  agencia_network:
+
+volumes:
+  mysql_data:
