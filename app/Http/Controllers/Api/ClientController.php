@@ -24,7 +24,7 @@ class ClientController extends Controller
         $clients = Client::search($request->only(['search', 'status']))
             ->withCount('contacts')
             ->latest()
-            ->paginate($request->integer('page', 10));
+            ->paginate(10);
 
         return response()->json($clients, Response::HTTP_OK);
     }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -76,6 +77,12 @@ return Application::configure(basePath: dirname(__DIR__))
                     'status' => 'error',
                     'message' => "Valor inválido para un campo enumerado",
                 ], 422);
+            }
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e, $request) {
+            if (!$request->is('web/*')) {
+                return Redirect::to('/dashboard'); 
             }
         });
     })->create();

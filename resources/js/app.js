@@ -1,19 +1,21 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import Alpine from 'alpinejs';
 
 // Componentes
 import prueba from './components/prueba.vue';
+import ClientList from './components/clients/ClientList.vue';
 
 const app = createApp({});
+
 const pinia = createPinia();
 
 app.use(pinia);
 
-// Registramos el componente globalmente para usarlo en cualquier vista Blade
 app.component('prueba', prueba);
+app.component('client-list', ClientList);
 
-// Montamos la aplicación de Vue en el elemento con id "app"
 app.mount('#app');
