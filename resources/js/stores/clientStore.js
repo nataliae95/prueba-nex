@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
 import axios from 'axios';
+import { defineStore } from 'pinia';
 
 export const useClientStore = defineStore('client', {
     state: () => ({
@@ -14,8 +14,21 @@ export const useClientStore = defineStore('client', {
         filters: { search: '', status: '' }
     }),
     actions: {
+        async initDashboard() {
+            await Promise.all([
+                this.fetchStatusOptions(),
+                this.fetchClients()
+            ]);
+        },
+
+        async fetchStatusOptions() {
+            const { data } = await axios.get('/api/enums/status');
+            this.statusOptions = data;
+        },
+        
         async fetchClients(page = 1) {
-            this.loading = true;
+            try {
+                this.loading = true;
             const { data } = await axios.get(`/api/clients`, {
                     params: { 
                         page, 
@@ -24,7 +37,13 @@ export const useClientStore = defineStore('client', {
                         }
                     });
             this.clients = data;
-            this.loading = false;
+            } catch (error) {
+                if (error.response?.status === 401) {
+                    window.location.href = '/login';
+                }
+            }finally {
+                this.loading = false;
+            }
         },
         async storeClient(clientData) {
             return await axios.post('/api/clients', clientData);
