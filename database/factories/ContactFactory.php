@@ -21,8 +21,7 @@ class ContactFactory extends Factory
     {
         return [
             'client_id' => Client::factory(),
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
+            'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->numerify('3#########'),
             'position' => Position::random(),

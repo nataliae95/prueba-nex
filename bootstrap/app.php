@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -55,6 +56,26 @@ return Application::configure(basePath: dirname(__DIR__))
                     'status'  => 'error',
                     'message' => 'Hubo un problema al procesar la información en la base de datos. Revisar logs'
                 ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
+            }
+        });
+
+        $exceptions->render(function (MethodNotAllowedHttpException $e, Request $request) {
+
+            if ($request->is('api/*') || $request->wantsJson()) {
+                return response()->json([
+                    'error' => 'Método HTTP no permitido para esta ruta',
+                    'allowed' => $e->getHeaders()['Allow'] ?? null,
+                ], 405);
+            }
+        });
+
+        $exceptions->render(function (ValueError $e, Request $request) {
+
+            if ($request->is('api/*') || $request->wantsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Valor inválido para un campo enumerado",
+                ], 422);
             }
         });
     })->create();

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\Api\StoreClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\DB;
 class ClientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Obtiene una lista paginada de los clientes.
+     *
+     * Permite filtrar por nombre, nit o estado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -25,17 +30,15 @@ class ClientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crea un nuevo cliente.
+     *
+     * @param  \App\Http\Requests\Api\StoreClientRequest $request Datos validados del formulario
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreClientRequest $request)
     {
         $client = DB::transaction(function () use ($request) {
-            return Client::create([
-                'name'      => $request->input('name'),
-                'taxId'     => trim($request->input('taxId')),
-                'status'    => $request->input('status'),
-                'created_by'   => 1,
-            ]);
+            return Client::create($request->validated());
         });
 
         return response()->json([
@@ -46,7 +49,10 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Muestra la información de un cliente.
+     *
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Client $client)
     {
@@ -57,7 +63,11 @@ class ClientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza la información de un cliente.
+     *
+     * @param  \App\Http\Requests\Api\StoreClientRequest $request Datos validados del formulario
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(StoreClientRequest $request, Client $client)
     {
@@ -74,7 +84,10 @@ class ClientController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un cliente existente.
+     *
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Client $client)
     {

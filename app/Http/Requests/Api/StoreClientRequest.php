@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class StoreClientRequest extends FormRequest
 {
@@ -27,10 +28,17 @@ class StoreClientRequest extends FormRequest
         return [
             'name'      => 'required|string|max:150',
             'taxId' => ['required', 'string', 'max:50', Rule::unique('clients', 'taxId')->ignore($this->client)],
-            'email'     => 'nullable|email|max:150',
-            'phone'     => 'nullable|string|max:20',
             'status'    => ['required', Rule::in(['activo', 'inactivo', 'prospecto'])],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'name'  => $this->name ? ucwords(mb_strtolower(trim($this->name), 'UTF-8')) : null,
+            'taxId' => $this->taxId ? strtolower(trim(str_replace(' ', '', $this->taxId))) : null,
+            'status' => $this->status ? trim($this->status) : null,
+        ]);
     }
 
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
