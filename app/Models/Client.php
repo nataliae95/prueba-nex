@@ -13,7 +13,8 @@ class Client extends Model
     use HasFactory, HasAudit;
 
     protected $casts = [
-        'status' => Status::class,
+        'created_at' => 'datetime:d/m/Y H:i',
+        'updated_at' => 'datetime:d/m/Y H:i',
     ];
 
     protected $fillable = [

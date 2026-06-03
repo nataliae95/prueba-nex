@@ -56,6 +56,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $client->load('creator');
         return response()->json([
             'status' => 'success',
             'data'   => $client

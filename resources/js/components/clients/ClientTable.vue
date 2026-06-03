@@ -31,6 +31,9 @@
                     <button @click="$emit('edit', client)" class="btn btn-sm btn-link text-primary p-1">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
+                    <a :href="`/clientes/${client.id}`" class="btn btn-sm btn-link text-info p-1">
+                        <i class="bi bi-eye-fill"></i>
+                    </a>
                     <button @click="$emit('delete', client.id)" class="btn btn-sm btn-link text-danger p-1">
                         <i class="bi bi-trash-fill"></i>
                     </button>

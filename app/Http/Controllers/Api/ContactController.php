@@ -26,7 +26,7 @@ class ContactController extends Controller
     {
         $Contacts = $client->contacts()->search($request->only(['search', 'position']))
             ->latest()
-            ->paginate($request->integer('page', 10));
+            ->paginate(10);
 
         return response()->json($Contacts, Response::HTTP_OK);
     }

@@ -43,13 +43,13 @@
 
 <script setup>
 import {
-    ref,
-    reactive,
-    computed
-} from 'vue';
-import {
     useClientStore
 } from "@/stores/clientStore";
+import {
+    computed,
+    reactive,
+    ref
+} from 'vue';
 
 const props = defineProps(['client', 'statusOptions']);
 const emit = defineEmits(['close', 'saved']);
@@ -58,7 +58,7 @@ const loading = ref(false);
 
 const isEditing = computed(() => !!props.client);
 
-const form = reactive(props.client ? {
+const form = reactive(props.client ?{
     ...props.client
 } : {
     name: '',
@@ -80,15 +80,15 @@ const save = async () => {
         emit('saved');
 
     } catch (error) {
-        if (error.response?.status === 422) {
+        if (error.response ?.status === 422) {
             const validationErrors = error.response.data.errors;
-            
+
             const firstFieldName = Object.keys(validationErrors)[0];
             const errorMessage = validationErrors[firstFieldName][0];
-            
+
             alert(`Error: ${errorMessage}`);
         } else {
-            alert(error.response?.data?.message || "Ocurrió un error inesperado.");
+            alert(error.response ?.data ?.message || "Ocurrió un error inesperado.");
         }
     } finally {
         loading.value = false;

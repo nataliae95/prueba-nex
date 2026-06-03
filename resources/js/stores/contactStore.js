@@ -11,33 +11,35 @@ export const useContactStore = defineStore('Contact', {
             next_page_url: null
         },
         loading: false,
-        filters: { search: '', status: '' }
+        filters: { search: '', position: '' }
     }),
     actions: {
-        async initDashboard() {
+        async initDashboard($id) {
             await Promise.all([
-                this.fetchStatusOptions(),
-                this.fetchContacts()
+                this.fetchPositionOptions(),
+                this.fetchContacts($id) 
             ]);
         },
 
         async fetchPositionOptions() {
             const { data } = await axios.get('/api/enums/positions');
-            this.statusOptions = data;
+            this.positionOptions = data;
         },
         
-        async fetchContacts(page = 1) {
+        async fetchContacts(id, page = 1) {
             try {
                 this.loading = true;
-            const { data } = await axios.get(`/api/Contacts`, {
+            const { data } = await axios.get(`/api/clients/${id}/contacts/`, {
                     params: { 
                         page, 
                         search: this.filters.search, 
-                        status: this.filters.status 
+                        position: this.filters.position 
                         }
                     });
-            this.Contacts = data;
+            this.contacts = data;
+            console.log(this.contacts);
             } catch (error) {
+                console.log(error);
                 if (error.response?.status === 401) {
                     window.location.href = '/login';
                 }
