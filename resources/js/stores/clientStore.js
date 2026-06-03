@@ -10,6 +10,7 @@ export const useClientStore = defineStore('client', {
             prev_page_url: null,
             next_page_url: null
         },
+        client: null,
         loading: false,
         filters: { search: '', status: '' }
     }),
@@ -45,11 +46,37 @@ export const useClientStore = defineStore('client', {
                 this.loading = false;
             }
         },
-        async storeClient(clientData) {
-            return await axios.post('/api/clients', clientData);
+
+        async fetchClient(id) {
+            this.loading = true;
+            try {
+                const { data } = await axios.get(`/api/clients/${id}`);
+                this.client = data;
+                console.log(this.client);
+            } catch (error) {
+                console.error("Error al obtener el cliente:", error);
+                throw error;
+            } finally {
+                this.loading = false;
+            }
         },
+
+        async _handleRequest(requestFn) {
+            const response = await requestFn();
+            await this.fetchClients(this.clients.current_page);
+            return response;
+        },
+
+        async updateClient(id, clientData) {
+            return await this._handleRequest(() => axios.put(`/api/clients/${id}`, clientData));
+        },
+
+        async createClient(clientData) {
+            return await this._handleRequest(() => axios.post('/api/clients', clientData));
+        },
+
         async deleteClient(id) {
-            return await axios.delete(`/api/clients/${id}`);
+            return await this._handleRequest(() => axios.delete(`/api/clients/${id}`));
         }
     }
 });

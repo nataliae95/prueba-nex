@@ -15,7 +15,7 @@ enum Status: string
     }
 
     /**
-     * Retorna una etiqueta legible y formateada, ideal para mostrar en la interfaz de Vue 3.
+     * Retorna una etiqueta legible y formateada.
      */
     public function label(): string
     {

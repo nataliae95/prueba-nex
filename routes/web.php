@@ -1,13 +1,15 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\ClientController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/clientes', function () {
-        return view('clients.index'); 
-    });
+    Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
+    Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
+
+    
 
     Route::get('/dashboard', function () {
         return view('dashboard');

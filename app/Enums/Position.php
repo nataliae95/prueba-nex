@@ -18,4 +18,34 @@ enum Position: string
         $cases = self::cases();
         return $cases[array_rand($cases)]->value;
     }
+
+    /**
+     * Retorna una etiqueta legible y formateada.
+     */
+    public function label(): string
+    {
+        return match ($this) {
+            self::SISTEMAS => 'Gerente de Sistemas',
+            self::TI => 'Director de TI',
+            self::COMPRAS => 'Coordinador de Compras',
+            self::DESARROLLO => 'Analista de Desarrollo',
+            self::RRHH => 'Director de Gestión Humana',
+            self::CONTABILIDAD => 'Contador Senior',
+            self::COMERCIAL => 'Líder Comercial',
+            self::ADMINISTRACION => 'Administrador de Sistemas'
+        };
+    }
+
+    /**
+     * Retorna un mapa completo de valores y etiquetas.
+     * Excelente para exponer mediante un API endpoint y llenar los selects del frontend.
+     * * @return array<array{value: string, label: string}>
+     */
+    public static function choices(): array
+    {
+        return array_map(fn($status) => [
+            'value' => $status->value,
+            'label' => $status->label()
+        ], self::cases());
+    }
 }

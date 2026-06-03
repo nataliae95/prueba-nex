@@ -92,4 +92,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 return Redirect::to('/dashboard');
             }
         });
+
+        $exceptions->render(function (ModelNotFoundException $e, $request) {
+            if ($request->is('clientes/*')) {
+                return redirect()->route('clients.index')
+                    ->with('error', 'El cliente no existe.');
+            }
+        });
     })->create();

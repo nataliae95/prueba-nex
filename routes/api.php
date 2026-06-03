@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Position;
 use App\Enums\Status;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ContactController;
@@ -16,5 +17,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/enums/status', function () {
         return response()->json(Status::choices());
+    });
+
+    Route::get('/enums/positions', function () {
+        return response()->json(Position::choices());
     });
 });
