@@ -52,4 +52,4 @@ Credenciales (según .env)
 
 ## ## Modelo de datos
 
-![](file:///Users/admin/Downloads/Prueba_Tecnica_Laravel_Vue.pdf)
+![](https://raw.githubusercontent.com/nataliae95/prueba-nex/refs/heads/main/modelo-datos.png)
