@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ContactController;
 use Illuminate\Support\Facades\Route;
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     // Rutas de Clientes: Recurso principal
     Route::apiResource('clients', ClientController::class);
 
@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
         return response()->json(Status::choices());
     });
 
+    // Rutas de los Enums
     Route::get('/enums/positions', function () {
         return response()->json(Position::choices());
     });
 
-//});
+});

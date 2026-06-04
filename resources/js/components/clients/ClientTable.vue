@@ -28,14 +28,19 @@
                 <td class="text-center">{{ client.contacts_count }}</td>
                 <td class="d-none d-lg-table-cell text-muted small">{{ client.created_at }}</td>
                 <td class="text-center pe-4">
-                    <button @click="$emit('edit', client)" class="btn btn-sm btn-link text-primary p-1">
-                        <i class="bi bi-pencil-fill"></i>
-                    </button>
-                    <a :href="`/clientes/${client.id}`" class="btn btn-sm btn-link text-info p-1">
-                        <i class="bi bi-eye-fill"></i>
+                    <a :href="`/clients/${client.id}`" 
+                        class="btn btn-sm btn-outline-info border-0 rounded-circle d-inline-flex align-items-center justify-content-center" >
+                        <i class="bi bi-eye fs-6"></i>
                     </a>
-                    <button @click="$emit('delete', client.id)" class="btn btn-sm btn-link text-danger p-1">
-                        <i class="bi bi-trash-fill"></i>
+                    
+                    <button type="button" @click="$emit('edit', client)" 
+                            class="btn btn-sm btn-outline-primary border-0 rounded-circle d-inline-flex align-items-center justify-content-center" >
+                        <i class="bi bi-pencil fs-6"></i>
+                    </button>
+                    
+                    <button type="button" @click="$emit('delete', client)" 
+                            class="btn btn-sm btn-outline-danger border-0 rounded-circle d-inline-flex align-items-center justify-content-center" >
+                        <i class="bi bi-trash fs-6"></i>
                     </button>
                 </td>
             </tr>

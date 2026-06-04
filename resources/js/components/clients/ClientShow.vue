@@ -1,4 +1,14 @@
 <template>
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/clients">Clientes</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Detalle Cliente
+        </li>
+    </ol>
+</nav>
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
       <div class="card-header bg-white py-4 border-0 d-flex justify-content-between align-items-center">
         <div>
@@ -48,23 +58,7 @@
           </div>
   
           <div class="col-lg-4">
-            <div class="bg-white p-4 rounded-4 shadow-sm border h-100">
-              <h6 class="text-secondary text-uppercase small fw-bold mb-3">Auditoría</h6>
-              <ul class="list-unstyled mb-0">
-                <li class="mb-3 d-flex justify-content-between border-bottom pb-2">
-                  <span class="text-muted"><i class="bi bi-calendar-plus me-2"></i>Creado</span>
-                  <span class="fw-semibold">{{ store.client.created_at }}</span>
-                </li>
-                <li class="mb-3 d-flex justify-content-between border-bottom pb-2">
-                  <span class="text-muted"><i class="bi bi-pencil me-2"></i>Editado</span>
-                  <span class="fw-semibold">{{ store.client.updated_at }}</span>
-                </li>
-                <li class="d-flex justify-content-between">
-                  <span class="text-muted"><i class="bi bi-person-badge me-2"></i>Responsable</span>
-                  <span class="fw-semibold">{{ store.client.creator?.name || 'Sistema' }}</span>
-                </li>
-              </ul>
-            </div>
+            <Audit :data="store.client"/>
           </div>
         </div>
   
@@ -78,6 +72,13 @@
         <p class="text-muted mt-3">Preparando datos...</p>
       </div>
     </div>
+    <ClientFormModal 
+            v-if="showModal" 
+            :client="clientToEdit"
+            :statusOptions="store.statusOptions"
+            @close="showModal = false" 
+            @saved="handleSaved" 
+        />
   </template>
   
   <style scoped>
@@ -88,6 +89,8 @@
 import { useClientStore } from "@/stores/clientStore";
 import { onMounted, ref } from "vue";
 import ContactListShow from "../contacts/ContactListShow.vue";
+import ClientFormModal from "./ClientFormModal.vue";
+import Audit from "../common/Audit.vue";
 
 const props = defineProps({
     clientId: Number

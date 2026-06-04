@@ -17,8 +17,8 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <a href="/" class="flex-shrink-0 flex items-center font-bold text-xl text-indigo-600 tracking-wider hover:text-indigo-800 transition-colors">
+                    💼 MINI-CRM
                 </a>
             </div>
 

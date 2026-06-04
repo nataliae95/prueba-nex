@@ -36,6 +36,18 @@ class Contact extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    protected static function booted()
+    {
+        static::saving(function ($contact) {
+            if ($contact->isDirty('is_primary') && $contact->is_primary) {
+                static::where('client_id', $contact->client_id)
+                    ->whereKeyNot($contact->getKey())
+                    ->where('is_primary', true)
+                    ->update(['is_primary' => false]);
+            }
+        });
+    }
+
     public function scopeSearch(Builder $query, array $filters): Builder
     {
         $search = trim($filters['search'] ?? '');

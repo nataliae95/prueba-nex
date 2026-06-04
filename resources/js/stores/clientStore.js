@@ -52,9 +52,7 @@ export const useClientStore = defineStore('client', {
             try {
                 const { data } = await axios.get(`/api/clients/${id}`);
                 this.client = data.data; 
-                console.log(this.client);
             } catch (error) {
-                console.error("Error al obtener el cliente:", error);
                 throw error;
             } finally {
                 this.loading = false;

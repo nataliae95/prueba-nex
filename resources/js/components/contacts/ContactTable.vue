@@ -22,12 +22,12 @@
                 <td class="d-none d-md-table-cell text-muted">{{ contact.email }}</td>
                 <td class="d-none d-lg-table-cell text-muted small">{{ contact.phone }}</td>
                 <td class="d-none d-lg-table-cell text-muted small">{{ contact.position }}</td>
-                <td class="d-none d-lg-table-cell text-muted small">{{ contact.id_primary }}</td>
+                <td class="d-none d-lg-table-cell text-muted small">{{ contact.is_primary }}</td>
                 <td class="text-center pe-4">
                     <button @click="$emit('edit', contact)" class="btn btn-sm btn-link text-primary p-1">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
-                    <button @click="$emit('delete', contact.id)" class="btn btn-sm btn-link text-danger p-1">
+                    <button @click="$emit('delete', contact)" class="btn btn-sm btn-link text-danger p-1">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                 </td>

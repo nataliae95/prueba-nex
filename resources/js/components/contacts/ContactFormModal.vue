@@ -32,6 +32,16 @@
                             </option>
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <label class="form-check-label fw-semibold" for="isPrimary">Principal </label>
+                            <input v-model="form.is_primary" class="form-check-input" type="checkbox" :true-value="1" :false-value="0">
+                        </div>
+                        <small class="text-muted">
+                            Marque esta opción si desea establecer este registro como principal.
+                        </small>
+                    </div>
                 </div>
     
                 <div class="modal-footer bg-light">
@@ -55,20 +65,23 @@
         reactive,
         ref
     } from 'vue';
+    import { notify } from '../../toast';
     
-    const props = defineProps(['client', 'statusOptions']);
+    const props = defineProps(['contact', 'positionOptions', 'clientId']);
     const emit = defineEmits(['close', 'saved']);
     const store = useContactStore();
     const loading = ref(false);
     
-    const isEditing = computed(() => !!props.client);
+    const isEditing = computed(() => !!props.contact);
     
-    const form = reactive(props.client ?{
-        ...props.client
+    const form = reactive(props.contact ?{
+        ...props.contact
     } : {
         name: '',
-        taxId: '',
-        status: 'prospecto'
+        email: '',
+        phone: '',
+        position: '',
+        is_primary: false
     });
     
     const save = async () => {
@@ -79,21 +92,23 @@
             if (isEditing.value) {
                 response = await store.updateContact(form.id, form);
             } else {
-                response = await store.createContact(form);
+                response = await store.createContact(props.clientId, form);
             }
-            alert(response.data.message);
+            store.fetchContacts(props.clientId);
+            notify('success', response.data.message);
             emit('saved');
+            
     
         } catch (error) {
-            if (error.response ?.status === 422) {
+            if (error ?.status === 422) {
                 const validationErrors = error.response.data.errors;
     
                 const firstFieldName = Object.keys(validationErrors)[0];
                 const errorMessage = validationErrors[firstFieldName][0];
     
-                alert(`Error: ${errorMessage}`);
+                notify('error', errorMessage);
             } else {
-                alert(error.response ?.data ?.message || "Ocurrió un error inesperado.");
+                notify('error', error.response ?.data ?.message || "Ocurrió un error inesperado.");
             }
         } finally {
             loading.value = false;

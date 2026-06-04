@@ -42,14 +42,10 @@
 </template>
 
 <script setup>
-import {
-    useClientStore
-} from "@/stores/clientStore";
-import {
-    computed,
-    reactive,
-    ref
-} from 'vue';
+import { useClientStore } from "@/stores/clientStore";
+import { computed, reactive, ref } from 'vue';
+import { notify } from '../../toast';
+
 
 const props = defineProps(['client', 'statusOptions']);
 const emit = defineEmits(['close', 'saved']);
@@ -76,7 +72,7 @@ const save = async () => {
         } else {
             response = await store.createClient(form);
         }
-        alert(response.data.message);
+        notify('success', response.data.message);
         emit('saved');
 
     } catch (error) {
@@ -86,9 +82,9 @@ const save = async () => {
             const firstFieldName = Object.keys(validationErrors)[0];
             const errorMessage = validationErrors[firstFieldName][0];
 
-            alert(`Error: ${errorMessage}`);
+            notify('error', errorMessage);
         } else {
-            alert(error.response ?.data ?.message || "Ocurrió un error inesperado.");
+            notify('error', error.response ?.data ?.message || "Ocurrió un error inesperado.");
         }
     } finally {
         loading.value = false;

@@ -19,6 +19,6 @@
 </template>
 
 <script setup>
-defineProps(['meta']);
-defineEmits(['change']);
+    defineProps(['meta']);
+    defineEmits(['change']);
 </script>

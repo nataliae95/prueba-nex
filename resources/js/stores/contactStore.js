@@ -37,9 +37,7 @@ export const useContactStore = defineStore('Contact', {
                         }
                     });
             this.contacts = data;
-            console.log(this.contacts);
             } catch (error) {
-                console.log(error);
                 if (error.response?.status === 401) {
                     window.location.href = '/login';
                 }
@@ -47,22 +45,20 @@ export const useContactStore = defineStore('Contact', {
                 this.loading = false;
             }
         },
-        async _handleRequest(requestFn) {
-            const response = await requestFn();
-            await this.fetchContacts(this.Contacts.current_page);
-            return response;
-        },
 
+        
         async updateContact(id, ContactData) {
-            return await this._handleRequest(() => axios.put(`/api/Contacts/${id}`, ContactData));
+            return await axios.put(`/api/contacts/${id}`, ContactData);
         },
-
+        
         async createContact(idClient, ContactData) {
-            return await this._handleRequest(() => axios.post(`/api/clients/${idClient}/Contacts`, ContactData));
+            return await axios.post(`/api/clients/${idClient}/contacts`, ContactData);
         },
-
-        async deleteContact(id) {
-            return await this._handleRequest(() => axios.delete(`/api/Contacts/${id}`));
+        
+        async deleteContact(contact) {
+            const request = await axios.delete(`/api/contacts/${contact.id}`);
+            this.fetchContacts(contact.client_id,this.contacts.current_page);
+            return request;
         }
     }
 });

@@ -27,10 +27,20 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'email' => ['nullable', 'email', 'max:150', Rule::unique('contacts', 'email')->ignore($this->contact)],
-            'phone'      => 'nullable|string|max:20',
+            'email' => ['required', 'email', 'max:150', Rule::unique('contacts', 'email')->ignore($this->contact)],
+            'phone'      => 'required|numeric|digits_between:7,15',
             'position'   => 'nullable|string|max:100',
             'is_primary' => 'required|boolean',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nombre',
+            'phone' => 'estado',
+            'position' => 'cargo',
+            'is_primary' => 'es principal'
         ];
     }
 

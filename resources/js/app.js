@@ -10,6 +10,7 @@ import prueba from './components/prueba.vue';
 import ClientList from './components/clients/ClientList.vue';
 import ClientShow from './components/clients/ClientShow.vue';
 
+
 const pinia = createPinia();
 
 // Función de utilidad para montar componentes

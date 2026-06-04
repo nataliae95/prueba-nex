@@ -32,6 +32,15 @@ class StoreClientRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nombre',
+            'taxId' => 'nit',
+            'status' => 'estado'
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([

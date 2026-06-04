@@ -43,39 +43,45 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useClientStore } from "@/stores/clientStore";
-import ClientFormModal from "./ClientFormModal.vue";
-import Pagination from "./Pagination.vue";
-import ClientTable from "./ClientTable.vue";
-
-const store = useClientStore();
-const showModal = ref(false);
-const clientToEdit = ref(null);
+    import { ref, onMounted } from "vue";
+    import { useClientStore } from "@/stores/clientStore";
+    import ClientFormModal from "./ClientFormModal.vue";
+    import Pagination from "../common/Pagination.vue";
+    import ClientTable from "./ClientTable.vue";
+    import { confirmDelete, notify } from '../../toast';
 
 
-// Lógica de Edición
-const openModalForm = (client = null) => {
-    clientToEdit.value = client;
-    showModal.value = true;
-};
+    const store = useClientStore();
+    const showModal = ref(false);
+    const clientToEdit = ref(null);
 
-const handleSaved = async () => {
-    showModal.value = false;
-};
 
-let searchTimeout;
-const handleSearch = () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => store.fetchClients(1), 500);
-};
+    const openModalForm = (client = null) => {
+        clientToEdit.value = client;
+        showModal.value = true;
+    };
 
-const changePage = (page) => store.fetchClients(page);
+    const handleSaved = async () => {
+        showModal.value = false;
+    };
 
-const remove = async (id) => {
-    if (!confirm("¿Eliminar este registro?")) return;
-    await store.deleteClient(id);
-};
+    let searchTimeout;
+    const handleSearch = () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => store.fetchClients(1), 500);
+    };
 
-onMounted(() => store.initDashboard());
+    const changePage = (page) => store.fetchClients(page);
+
+    const remove = async (client) => {
+        const confirmed = await confirmDelete(`¿Eliminar al cliente ${client.name}?`);
+        
+        if (confirmed) {
+                await store.deleteClient(client.id);
+                notify('success', 'Cliente eliminado correctamente');
+        }
+        
+    };
+
+    onMounted(() => store.initDashboard());
 </script>

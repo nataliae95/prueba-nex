@@ -37,6 +37,7 @@
             v-if="showModal" 
             :contact="contactToEdit"
             :positionOptions="store.positionOptions"
+            :clientId="clientId"
             @close="showModal = false" 
             @saved="handleSaved" 
         />
@@ -46,9 +47,10 @@
 <script setup>
 import { useContactStore } from "@/stores/contactStore";
 import { onMounted, ref } from "vue";
-import Pagination from "../clients/Pagination.vue";
+import Pagination from "../common/Pagination.vue";
 import ContactFormModal from "./ContactFormModal.vue";
 import ContactTable from "./ContactTable.vue";
+import { confirmDelete, notify } from '../../toast';
 
 
 const props = defineProps(['clientId']);
@@ -57,8 +59,6 @@ const store = useContactStore();
 const showModal = ref(false);
 const contactToEdit = ref(null);
 
-
-// Lógica de Edición
 const openModalForm = (contact = null) => {
     contactToEdit.value = contact;
     showModal.value = true;
@@ -76,9 +76,13 @@ const handleSearch = () => {
 
 const changePage = (page) => store.fetchContacts(props.clientId, page);
 
-const remove = async (id) => {
-    if (!confirm("¿Eliminar este registro?")) return;
-    await store.deleteContact(id);
+const remove = async (contact) => {
+    const confirmed = await confirmDelete(`¿Eliminar a ${contact.name}?`);
+    
+    if (confirmed) {
+            await store.deleteContact(contact);
+            notify('success', 'Contacto eliminado correctamente');
+    }
 };
 
 onMounted(() => store.initDashboard(props.clientId));

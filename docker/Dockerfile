@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     git \
     nodejs \
     npm \
-    && docker-php-ext-install intl pdo pdo_mysql zip
+    && docker-php-ext-install intl pdo pdo_mysql zip bcmath
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
@@ -33,7 +33,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+    && chmod -R 775 storage bootstrap/cache volumes
 
 # Comando para iniciar Apache en primer plano
 CMD ["apache2-foreground"]
