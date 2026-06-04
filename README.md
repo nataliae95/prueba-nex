@@ -17,6 +17,8 @@ Este proyecto es un Mini CRM para manejo de clientes, desarrollado como prueba t
 - `git clone <repositorio>`
 - `cd nombre_proyecto`
 
+### Crear archivo .env
+`cp .env.example .env`
 ###Levantar contenedores
 `docker compose up -d --build`
 
