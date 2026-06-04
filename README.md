@@ -19,16 +19,16 @@ Este proyecto es un Mini CRM para manejo de clientes, desarrollado como prueba t
 
 ### Crear archivo .env
 `cp .env.example .env`
-###Levantar contenedores
+### Levantar contenedores
 `docker compose up -d --build`
 
-###Instalar dependencias
+### Instalar dependencias
 `docker exec -it agencia_php composer install`
 
-###Ejecutar migraciones y seeders
+### Ejecutar migraciones y seeders
 `docker exec -it agencia_php php artisan migrate:fresh --seed`
 
-###Levantar frontend
+### Levantar frontend
 `docker exec -it agencia_php npm run dev -- --host`
 
 ------------
