@@ -48,8 +48,3 @@ Credenciales (según .env)
 - Base de datos: agencia
 
 ------------
-
-
-## ## Modelo de datos
-
-![](https://raw.githubusercontent.com/nataliae95/prueba-nex/refs/heads/main/modelo-datos.png)
