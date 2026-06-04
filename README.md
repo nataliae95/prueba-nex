@@ -24,6 +24,7 @@ Este proyecto es un Mini CRM para manejo de clientes, desarrollado como prueba t
 
 ### Instalar dependencias
 `docker exec -it agencia_php composer install`
+`docker exec -it agencia_php npm install`
 
 ### Ejecutar migraciones y seeders
 `docker exec -it agencia_php php artisan migrate:fresh --seed`
